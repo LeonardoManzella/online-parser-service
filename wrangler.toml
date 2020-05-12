@@ -1,4 +1,4 @@
-name = "transportation-changes"
+name = "online-parser-service"
 type = "webpack"
 account_id = "48dc54069a01a3f660c95d048b589bc2"
 workers_dev = true
