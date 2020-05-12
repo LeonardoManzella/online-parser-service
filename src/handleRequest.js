@@ -151,73 +151,12 @@ function myParser(res) {
 
 //Handle Main Request
 export default async function handleRequest(mainRequest) {
-    prepareFakeWindow(self);
-    prepareJQuery();
-    console.log("**** window document:", window.document);
-    console.log("**** JQuery version:", $.fn.jquery);
-    initSignalR();
-    prepareSignalR(jQuery); 
-    // console.log("htmlparser2: ", htmlparser2);
-    // const parser = new htmlparser2.Parser(
-    //     {
-    //         onopentag(name, attribs) {
-    //             if (name === "script" && attribs.type === "text/javascript") {
-    //                 console.log("JS! Hooray!");
-    //             }
-    //         },
-    //         ontext(text) {
-    //             console.log("-->", text);
-    //         },
-    //         onclosetag(tagname) {
-    //             if (tagname === "script") {
-    //                 console.log("That's it?!");
-    //             }
-    //         }
-    //     },
-    //     { decodeEntities: true }
-    // );
-    // parser.write(
-    //     "Xyz <script type='text/javascript'>var foo = '<<bar>>';</ script>"
-    // );
-    // parser.end();
-
-    //! TODO el problema es que se llena desde el Javascript con una libreria de jqueri SignalR o algo asi, habria que entender como funciona que hace una coneccion a singalR de metrovias y usar los datos que devuelvan directamente 
-    /*
-        Hay que incluir jquery, signalR y las librerias asociadas, tengo descargadas una copia pero no se si podemos usarlas asi nomas. 
-        Porque necesitamos que se pongan en nombre jQuery, no se si $ va a permitirme el cloudflare worker
-        Hay que probar incluir asi nomas las libreiras con import o require a ver que pasa
-        Al finalizar hay que parsear el html para obtener lo que quiero para llenarlo en un array o simil para poder procesarlo con las otras funciones
-    */
-   var hub = jQuery.connection.moveShape;
-   console.log("--- hub initialized ---", hub);
-   hub.client.estadoLineas = function (html) {
-       console.log("HTML: ", html);
-
-   };
-   jQuery.connection.hub.start().done(function () {
-    console.log("Conecction done");
-   });
-//    jQuery.connection.hub.start().fail(function () {
-//     console.error("Conecction fail");
-//    });
-   jQuery.connection.hub.disconnected(function () {
-       console.log("Connection finished");
-       setTimeout(function () {
-           jQuery.connection.hub.start();
-       }, 5000);
-   });      
-
-    // await fetch('https://www.metrovias.com.ar/estadolineas/desktop.html')
-    // .then((res) => {
-    //     console.log("There is response!");
-    //     return res.text();
-    // })
-    // .then((data) => {
-    //     console.log("Data: ", data);
-    //     // $('#container').html(data);
-    // });
-
-    return new Response('Hello worker!', {
-        headers: { 'content-type': 'text/plain' },
+   
+    return new Response(
+        JSON.stringify(
+            mainRequest
+        ), {
+        status: 200,
+        headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
     });
 }
