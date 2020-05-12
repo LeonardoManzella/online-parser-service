@@ -17381,10 +17381,11 @@ function myParser(res) {
 
 //Handle Main Request
 async function handleRequest(mainRequest) {
-   
+    const body = await mainRequest.json();
+
     return new Response(
         JSON.stringify(
-            mainRequest
+            body
         ), {
         status: 200,
         headers: { 'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*' },
